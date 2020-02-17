@@ -1,0 +1,22 @@
+{
+  "name": "wetube",
+  "version": "1.0.0",
+  "description": "youtube clone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simyeongryu/wetube.git"
+  },
+  "author": "simyeongryu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simyeongryu/wetube/issues"
+  },
+  "homepage": "https://github.com/simyeongryu/wetube#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
