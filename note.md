@@ -171,5 +171,49 @@ express의 중요한 내용.
 
 express의 모든함수는 middleware가 될 수 있다.
 
+## morgan?
+
+> https://github.com/expressjs/morgan
+
+middleware 
+
+log 에 도움을 줌
+
+> npm install morgan
 
 
+## helmet 
+
+> https://github.com/helmetjs/helmet
+보안
+
+> npm install helmet
+
+## middleware: cookie-parser, body-parser 
+
+> https://github.com/expressjs/body-parser
+> https://github.com/expressjs/cookie-parser
+
+누군가 form을 채워서 보낸다면 서버에 의해 받아져야 한다. 특정한 형태로. 예: 아이디 비번 등
+body-parser = body 로부터 정보를 얻는다.
+cookie-parser = cookie에 유저 정보를 저장. session을 다루기 위해.
+
+JSON, from 등 request 하는 정보의 종류의 따라 옵션을 설정해야 한다.
+
+```
+// 라우트에 도달하기 전에 미들웨어가 res.send() 하면 연결이 끊긴다. , next() 가 아니라.
+const stopConnection = (req, res, next) => {
+    res.send("stop!");
+}
+```
+
+## Express core : Routing
+
+모듈 : 다른 파일에서 객체를 불러다 쓸 수 있다. import. require.
+
+> export default app;
+>> import app from "./app";
+위와 같이 설정한 파일을 import 하면 해당 파일의 app 객체를 받을 수 있다.
+
+> export const uesrRouter = express.Router();
+>> 해당 변수만 export 
