@@ -102,13 +102,11 @@ GET request는 정보를 전달할 수 있다 예) 로그인, 댓글
 
 ## Babel
 
-최신의 자바스크립트를 예전의 자바스크립트로 변환해줌.
+최신의 자바스크립트를 예전의 자바스크립트로 변환해준다. 몇몇 브라우저는 최신의 JS(ES6+)를 지원하지 않기 때문에, 코드 작성의 편의를 위해 ES6+로 작성하고 예전 자바스크립트 문법으로 컴파일해주는 바벨을 이용하는 것.
 
 사용할 수 있는 방법은 여러가지가 있지만(Babel loader) 여기선 `Babel node`를 사용한다.
 
-```shell
-npm install @babel/node
-```
+> $ npm install @babel/node
 
 Babel은 stage가 있다. 
 
@@ -117,7 +115,7 @@ Babel은 stage가 있다.
 프리셋이 많다. -> 여기서 사용할 건 `-env` 가장 최신이면서 너무 실험적이지 않음. 쓰고 싶은대로 JS 코드를 써도 되지만 그렇다고 너무 실험적인 수준의 코드가 나오진 않는다. 문법변환을 위한 세부조정이 필요 없다.
 
 > https://babeljs.io/docs/en/babel-preset-env
-> npm install --save-dev @babel/preset-env
+> $ npm install --save-dev @babel/preset-env
 
 `.babelrc` 파일 생성해서 우리가 원하는 모든 설정을 박는다. node와 JS와 관련된 것. preset을 설정하는 곳. 아래 내용 추가.
 ```
@@ -132,12 +130,11 @@ Babel은 stage가 있다.
   ]
 }
 ```
-
 package.json 에 node index.js 를 babel-node index.js 로 바꾸면
 
 첫 에러로 @babel/core를 찾지 못한다고 뜬다.
 
-> npm install @bablel/core
+> $ npm install @bablel/core
 
 #### nodemon
 
@@ -147,13 +144,13 @@ package.json의 dependencies 는 프로젝트가 실행되려면 필요한 패�
 
 근데 프로젝트에 필요하진 않지만 개발자를 편하게 만들어주는 패키지를 설치하는 방법은?
 
-> npm install nodemon -D
+> $ npm install nodemon -D
 
 이렇게 하면 dependencies에 포함되지 않음
 
 `devDependencies`에 포함된다.
 
-package.json script 부분에
+package.json script 부분에 아래 구문을 삽입한다.
 
 > nodemon --exec babel-node index.js
 
@@ -161,7 +158,7 @@ package.json script 부분에
 
 > nodemon --exec babel-node index.js --delay 2
 
-2초 기다리고 재시작. (babel이 코드 변환하는 시간.) ??? 뭔말
+babel이 코드를 변환하는 시간(2초) 기다리고 서버 재시작.
 
 ## middleware
 
@@ -170,6 +167,17 @@ express의 중요한 내용.
 처리가 끝날 때까지 연결되어 있다? `처음 요청부터 마지막 응답까지 그 사이에 존재하는 무언가.`
 
 express의 모든함수는 middleware가 될 수 있다.
+
+그냥 함수인데 라우터 처리 중간에 들어가면 middleware
+
+### 미들웨어로 라우터 접근 막기.
+```js
+// 라우트에 도달하기 전에 미들웨어가 res.send() 하면 연결이 끊긴다. , next() 가 아니라.
+const stopConnection = (req, res, next) => {
+    res.send("stop!");
+    // res.redirect(router); 로 특정 라우터로 강제 이동시킬 수도 있다.
+}
+```
 
 ## morgan?
 
@@ -200,11 +208,60 @@ cookie-parser = cookie에 유저 정보를 저장. session을 다루기 위해.
 
 JSON, from 등 request 하는 정보의 종류의 따라 옵션을 설정해야 한다.
 
+
+
 ```
-// 라우트에 도달하기 전에 미들웨어가 res.send() 하면 연결이 끊긴다. , next() 가 아니라.
-const stopConnection = (req, res, next) => {
-    res.send("stop!");
-}
+/** 라우트 */
+// require는 괄호 안의 것을 찾아서 가져온다.
+// 'express'를 현재 폴더 내에서 찾고, 없으면 node_modules 에서 찾는다.
+// require나 import로 작은 블럭들을 쌓아간다.
+// 아래 코드는 express를 import했다고 생각하자.
+// const express = require('express'); // 아래의 것과 같다.
+import express from "express";
+```
+
+```
+import express from "express";
+import morgan from "morgan";
+import helmet from "helmet";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import {userRouter} from "./router";
+
+const app = express(); // express를 실행해서 app에 담는다.
+
+// request object: 누군가 페이지에 접속을 요청, 혹은 정보를 전달하면 그걸 이 obj로 얻는다.
+// response object: 
+// function handleHome(req, res) {
+//     // console.log(req);
+//     res.send('Hello from Home');
+// }
+/** arrow function */
+// const handleProfile = (req, res) => res.send('You are on my profile');
+
+// express에서 route 같이 connection을 다루는 모든 것들은 req, res, next를 갖고 있다. next는 일종의 권한키로, 어떤 요청에 대해 어떤 응답을 할지 말지 결정한다.
+// 마지막 함수(응답)에는 대개 필요 없다.
+// const betweenHome = (req, res, next) => {
+//     console.log("middleware");
+//     next();
+// }
+app.use(helmet());
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true })); // form에서 온 데이터 읽기
+app.use(bodyParser.json()); // JSON 읽기
+// app.use(betweenHome); // 이렇게 하면 이 라인 아래의 route 들 모두에게 middleware로 적용
+/* 옵션 종류(args)에 따라 표시되는 log의 구체성이 달라진다. */ 
+app.use(morgan("dev"));
+
+/** GET, POST */
+// 누군가 "/"로 접근한다면, handleHome 함수 실행
+// 요청이 "/"로 온다 -> betweenHome 실행(middleware) -> handleHome 실행.(마지막 응답)
+// app.get("/", betweenHome ,handleHome); // middleware 를 이런 식으로 요청과 응답 사이에 넣어도 되지만, 이렇게 하면 해당 라우트에만 적용이 된다. 
+// app.get("/", stopConnection, handleHome); // 라우트에 도달하기 전에 미들웨어가 response 하면 연결이 끊긴다.
+// "/profile" 로 접근하면 handleProfile 실행
+app.use("/user", userRouter); // use? 누군가 /user로 접속하면 userRouter 객체를 사용.
+
+export default app;
 ```
 
 ## Express core : Routing
@@ -216,4 +273,30 @@ const stopConnection = (req, res, next) => {
 위와 같이 설정한 파일을 import 하면 해당 파일의 app 객체를 받을 수 있다.
 
 > export const uesrRouter = express.Router();
->> 해당 변수만 export 
+>> 해당 변수만 export 이때 import 방식은 아래와 같다.
+>>> import {userRouter} from "./routers/userRouter";
+
+## MVC
+
+Model : data 데이터 .데이터베이스
+View : how does the data look 데이터를 보여주는 것 .템플레이트
+Control : function that looks for the data 데이터를 찾는 함수
+->> 일종의 구조. structure. 
+
+URL과 함수를 분리 데이터의 모습에 맞춰서. 
+
+controller : /** route가 사용할 함수를 정의한 뒤 export */
+
+### 애로우 펑션 암시적 리턴
+
+```javascript
+function arrow() {
+  return "arrow";
+}
+
+// 와
+
+const arrow = () => "arrow"; 
+
+// 는 같다.
+```
