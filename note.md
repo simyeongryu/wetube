@@ -377,3 +377,26 @@ One Single Source of Truth(한 곳에서만 정보를 보관하고 이 곳의 �
 
 
 
+### 템플릿에 정보 추가하기.
+
+컨트롤러 -> 템플릿.
+
+개별적으로, 전체적으로도 가능. 
+
+헤더가 routes.js 에 접근하도록.
+
+https://expressjs.com/ko/4x/api.html#res.locals
+- local variable 을 global variable로 바꿔주자.
+    - `res.locals` 를 이용한다. 이 안에 있는 것들은 템플릿의 변수로 이용된다. 
+- 미들웨어 위에 있는 라우터들은 해당 미들웨어를 사용할 수 없다.
+- locals 에 있는 변수들은 템플릿과 views에서 전역적으로 사용이 가능하다. 템플릿들을 수정할 필요 없이, 해당 변수만 수정하면 다 적용이 된다.
+
+> 항상 알파벳 순으로 import하는 것이 좋은 습관이다.
+
+- 개별적으로 변수 추가하기.
+`res.render()` 함수의 첫번째 인자는 템플릿 파일의 이름. 두번째 인자는 그 템플릿에서 사용될 객체.
+
+```js
+// home이라는 이름의 템플릿 파일과 그 템플릿에서 사용될 객체. 객체에 pageTitle이라는 key가 있다.
+res.render("home", { pageTitle: "HOME"});
+```
