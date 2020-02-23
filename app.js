@@ -10,6 +10,10 @@ import routes from "./routes";
 
 const app = express(); // express를 실행해서 app에 담는다.
 
+/** view */
+app.set("view engine", "pug")
+
+/** middlewares */
 app.use(helmet());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true })); // form에서 온 데이터 읽기

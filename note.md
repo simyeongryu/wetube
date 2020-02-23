@@ -175,7 +175,7 @@ express의 모든함수는 middleware가 될 수 있다.
 // 라우트에 도달하기 전에 미들웨어가 res.send() 하면 연결이 끊긴다. , next() 가 아니라.
 const stopConnection = (req, res, next) => {
     res.send("stop!");
-    // res.redirect(router); 로 특정 라우터로 강제 이동시킬 수도 있다.
+    // res.redirect(위치); 로 특정 라우터로 강제 이동시킬 수도 있다.
 }
 ```
 
@@ -300,3 +300,80 @@ const arrow = () => "arrow";
 
 // 는 같다.
 ```
+
+## Pug - view engine
+
+> $ npm install pug
+
+https://expressjs.com/ko/4x/api.html#app.set 참조.
+
+```js
+// 어플리케이션을 설정하는 함수. -> "view engine"이라는 설정의 값을 "pug"로 바꾸겠다.
+// view engine의 기본값은 undefined
+app.set("view engine", "pug");
+
+// pug와 express에는 view 파일들의 위치에 관한 기본 설정들이 있다.
+// html 파일을 저장해야 하는 폴더의 기본값은 '프로젝트작업디렉토리/views'
+// 그걸 바꿔주려면 application의 화면이 담긴 디렉토리나 디렉토리의 배열을 담으면 된다.
+// views라는 폴더 만들고. home.pug 만들기
+app.set("views", )
+```
+
+- pug : 템플릿 언어. express의 view engine. html파일들이 더 멋져 보이게 해준다.
+
+```html
+<p>Hello</p>
+```
+를 pug 파일에선
+```pug
+p Hello
+```
+라고 쓴다. pug가 해당 코드를 일반적은 html 코드로 변환시킨다.
+
+#### res.render(템플릿파일이름)
+
+html 코드 response 하기
+
+해당 이름을 갖고 있고 확장자가 pug 인 템플릿 파일을 views 폴더에서 찾는다.
+
+`block (name)` 을 이용해서 다른 파일들의 내용을 이용한다.
+
+- pug 는 들여쓰기를 사용한다. 스페이스4칸. 파이썬과 비슷.
+- 여기서는 views - layouts - main.pug에 기본 레이아웃을 짠다. 해당 폴더의 main 태그 안에 home 화면 등의 코드가 들어간다.
+- main tag 안에 block을 집어 넣고 그 block의 name을 content라고 한다.
+- extends 파일경로.
+    - 파일경로의 코드를 사용하고(복붙), 거기에 현재 파일의 코드를 더하겠다.
+- 파이썬과 같은 방식으로 html을 쓴다고 생각하자.
+
+## partials
+
+페이지의 일부분. portions of pages
+
+조직적인 목적으로 만들어진다?
+
+header.pug와 footer.pug를 만들자.
+
+pug 는 html 코드도 인식한다.
+
+아래 두 코드는 같은 것.
+```pug
+<i class="fab fa-youtube"></i>
+i.fab.fa-youtube
+```
+
+원하는 부분에 `include 경로` 하면 해당 파일을 사용한다.
+
+pug에서 js를 사용하는 방법 = `#{}` 사용.
+
+div 태그는 클래스 등을 사용할 땐 생략이 가능하다.
+
+```pug
+div.classname
+
+.classname
+```
+
+One Single Source of Truth(한 곳에서만 정보를 보관하고 이 곳의 정보가 바뀌면 관련된 모든 곳들의 정보가 변하는 것.)
+
+
+
