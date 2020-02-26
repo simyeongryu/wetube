@@ -1,8 +1,15 @@
 /** route가 사용할 함수를 정의한 뒤 export */
 export const home = (req, res) => 
     res.render("home", {pageTitle: "Home"});
-export const search = (req, res) => 
-    res.render("search", {pageTitle: "Search"});
+
+export const search = (req, res) => {
+    // const searchingFor = req.query.term;  ES6+ 이전 방식
+    const { 
+        query: { term: searchingFor }
+    } = req;
+    res.render("search", {pageTitle: "Search", searchingFor: searchingFor});
+}
+
 export const videos = (req, res) => 
     res.render("videos", {pageTitle: "Videos"});
 export const uploadVideo = (req, res) => 

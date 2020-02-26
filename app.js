@@ -13,7 +13,7 @@ const app = express(); // express를 실행해서 app에 담는다.
 
 /** middlewares */
 app.use(helmet()); // 보안 관련된 helmet이 주로 가장 위에 있어야 한다.
-app.set("view engine", "pug")
+app.set("view engine", "pug");
 app.use(cookieParser());
 app.use(bodyParser.json()); // JSON 읽기
 app.use(bodyParser.urlencoded({ extended: true })); // form에서 온 데이터 읽기

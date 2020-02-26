@@ -400,3 +400,36 @@ https://expressjs.com/ko/4x/api.html#res.locals
 // home이라는 이름의 템플릿 파일과 그 템플릿에서 사용될 객체. 객체에 pageTitle이라는 key가 있다.
 res.render("home", { pageTitle: "HOME"});
 ```
+
+### console.log(req.query);
+
+form 태그의 get method 로 정보를 보내면 파라미터의 이름은 name 태그가 되고, 입력값은 req.query라는 객체에 담긴다. 
+
+`req.query.name` 을 하면 해당 파라미터의 값을 구할 수 있다.
+
+> url?name=
+
+`&`을 이용해 파라미터를 추가할 수 있다.
+
+```js
+const searchingBy = req.query.term;  // ES6+ 이전 방식
+
+const { 
+    query: { term: searchingBy }
+} = req;
+```
+
+컨트롤러가 쿼리에 접근하려면 method가 get이어야 한다. url에 접근해야 하기 때문.
+
+## |Continue with Github
+pug 파일에서 text만 쓰려고 한다면 텍스트 앞에 `|` 파이프라인을 붙여준다.
+
+두 번 이상 사용하는 부분이 있다면 모듈화 하자.
+
+## /:id
+
+라우터에서 경로값이 변수(:id)면 그 경로값이 밑에 있어야 한다. 
+
+변수가 아닌 경로들을 위로 올려서 먼저 인식 시키고 변수 경로들을 아래로 깔자. 
+
+변수인 경로가 위에 있으면 그아래 고정값 경로를 변수로 인식해서 잘못된 경로로 간다.
