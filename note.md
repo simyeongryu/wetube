@@ -59,6 +59,12 @@ macOS 유저
 
 > node index.js
 
+## package.json scripts
+
+npm 서버가 시작하자마자 실행됭 명령어를 추가하고 싶다면 해당 파일에 scripts 라는 키를 만들고 원하는 명령어 입력
+
+# express 설치 
+
 express 를 설치하자 -> npm을 이용 (npm.js 검색)
 
 Node Package Manager
