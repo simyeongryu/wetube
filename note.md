@@ -533,3 +533,94 @@ required=true
 
 A router is in charge of mapping URLS with Controller Functions
 
+## MongoDB
+
+NoSQL. 규칙이 적고 유연하다.
+
+모든 게 크고 실험적이다. (규약이 적다.)
+
+Relationship(?)이 적은 프로젝트에 적합.
+
+www.mongodb.com 으로 이동
+
+download center에서 
+
+mongoDB community server를 받는다. (enterprise 말고)
+
+db와 관련된 것을 하고, 영상을 보고, 영상을 업로드할 수 있도록.
+
+```
+npm install dotenv
+```
+
+```
+npm install mongoose
+```
+
+mongoose.js는 mongodb와 node.js 를 연결시키는 adaptor
+
+
+
+dotenv는 숨기고 싶은 데이터를 숨기는 것.
+
+mongod로 port 확인
+
+init.js에 db를 import. 서버가 시작되자마자 연결해줘야 하니까.
+
+## dotenv 구성
+
+.env라는 파일을 생성(이름은 상관없음)
+
+dotenv.config이라는 함수로 .env 파일 안의 정보를 불러올 수 있다.
+
+그 정보들은 `process.env.(KEY)`로 저장된다.
+
+.env 파일을 .gitignore에 반드시 추가해야 한다. 그렇지 않으면 이렇게 정보를 숨긴 게 헛수고가 된다.
+
+## MODELS
+
+몽고디비의 장점은 문서가 적다. 
+
+우리의 문서들이 어떻게 생성되어야 할지 정해줘야 한다. 아무렇게나 생성되면 안되니까.
+
+model: data
+
+schema: shap. table 같은 거.
+
+비디오를 db에 저장하지 않는다. bytes가 아니라 link를 저장한다.
+
+amamzon에 비디오를 저장한다 db에는 비디오의 링크를 저장
+
+now() 메소드는 1970년 1월 1일 0시 0분 0초부터 현재까지 경과된 밀리 초를 Number 형으로 반환합니다. now()는 Date의 정적 메소드이기 때문에, 항상 Date.now() 처럼 사용하셔야 합니다.
+
+schema 설정 때 함수에 ()을 붙이지 않는 이유는 해당 데이터가 저장될 때 실행시켜야 하기 때문이다. ()을 붙이면 서버가 시작되자마자 실행된다.
+
+MogoDB adds IDs automatically.
+
+> schema 옵션 참고: https://mongoosejs.com/ 이동, documentation - schema
+
+
+relationship == 참조.
+
+비디오와 댓글과의 연관. 어떤 것이 어떤 것과 연결되어 있는지 알아야 한다.
+
+1. 첫 번째 방법.
+    - Video와 Comment를 그대로 두고, Comment 스키마에 video라는 키 생성
+    - type: mongoose.Schema.Types.ObjectId
+    - ref: 참조하려는 model에서 만든 model 의 name
+```js
+    video: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Video"
+    }
+```
+2. 두번째
+   - Video에 comment 들의 id를 담을 배열 설정.
+```js
+    comment: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment"
+    }]
+```
+
+즉, 부모 schema 에 자식 id 를 배열로 담을 것인지 자식 schema에 부모 id를 하나씩 넣어줄 것인지 정하면 된다.

@@ -1,4 +1,3 @@
-import { videos } from "../db";
 import routes from "../routes";
 
 /** route가 사용할 함수를 정의한 뒤 export */
