@@ -644,3 +644,45 @@ error가 있어도 다음 과정을 진행한다.
 error 가 thorw 하면 그 에러를 catch 할 수 있게 한다. 
 
 try catch 구문은 프로그램이 멈추는 것을 막는다. 예외처리.
+
+## upload
+
+파일 자체를 저장하는 것이 아니라 그 파일의 link를 저장하는 것이다. 용량 문제.
+
+Video가 아닌 file이 들어오지 않게 보호하는 것.
+
+view 에서 `accept="video/*"` 사용
+
+file 을 업로드하고 해당 링크를 반환하는 middleware가 필요하다.
+
+## multer
+
+file 을 업로드하고 해당 링크를 반환하는 middleware
+
+```shell
+$ npm install multer
+```
+
+**이후 upload form의 encType 에 `multipart/form-data` 추가**
+
+
+middlewares 에 multer import 및 처리.
+
+videorouter 에 postUpload 사이에 미들웨어 처리 삽입
+
+## 팁
+```js
+const {
+    body: {videoFile, title, description}
+} = req;
+
+// 이렇게 하면 body는 존재하지 않고 videoFile, title, description 이 변수들이 존재한다. (req.body.title)
+
+// 이러면 존재한다. req.body
+const { body } = req;
+```
+videoController upload post 함수에서
+
+console.log(req.file);
+
+하면 파일의 경로를 찾을 수 있다.
