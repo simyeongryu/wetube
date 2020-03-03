@@ -18,7 +18,7 @@ const VideoSchema = new mongoose.Schema({
         type: Date,
         default: Date.now // 현재 날짜를 반환하는 함수. document를 저장할 때마다 해당 function을 사용해서 현재 날짜를 반환한다.
     },
-    comment: [
+    comments: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Comment"

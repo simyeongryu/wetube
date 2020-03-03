@@ -786,3 +786,8 @@ $ npm install prettier -D
 
 eslint 사용법은 나중에 다시 알아볼 것.
 
+## 정규표현식
+
+string 으로부터 뭔가를 가져온다. 
+
+
