@@ -746,3 +746,13 @@ controller에서 어떤 값을 갖고 있다는 것을 router 등에서 표현�
 가 된다. url에서 무언가를 받아오는 방법이다.
 
 ## const video = await Video.findById();
+
+parameter 는 id . id는 query로 전해진다. 
+
+## get, post
+
+get은 정보를 얻고 렌더링. post는 update 하고 어디론가 redirect
+
+## try ~ catch 를 반복하지 않고도 어떤 id로 접근하건 다 예외처리를 할 수 있는 방법???
+
+## Model.findOneAndUpdate
