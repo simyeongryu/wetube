@@ -756,3 +756,33 @@ get은 정보를 얻고 렌더링. post는 update 하고 어디론가 redirect
 ## try ~ catch 를 반복하지 않고도 어떤 id로 접근하건 다 예외처리를 할 수 있는 방법???
 
 ## Model.findOneAndUpdate
+
+## ESLint
+
+Linter 뭔가 틀린 게 있으면 알려준다.
+
+```
+$ npm install eslint -D
+```
+
+-g를 붙이는 것은 global하게 설치하는 거. 모든 프로젝트에 설치하는 것. 해당 프로젝트 폴더 뿐만 아니라. 웬만하면 하지 마라.
+
+```
+$ eslint --init
+```
+
+이것저것 질문에 답하면 몇몇 파일이 생김.
+
+prettier plugin save formatting
+
+
+코드 스타일에 대해선 조용히 하게 만듦.
+
+```
+$ npm install eslint-config-prettier -D
+$ npm install eslint-plugin-prettier -D
+$ npm install prettier -D
+```
+
+eslint 사용법은 나중에 다시 알아볼 것.
+
