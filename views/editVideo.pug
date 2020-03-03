@@ -7,4 +7,4 @@ block content
             // textarea 는 value 속성이 없다.
             textarea(placeholder="Description", name="description")=video.description
             input(type="submit", value="Update Video")
-        a.form-container__link(href=routes.videos+routes.deleteVideo) Delete Video
+        a.form-container__link(href=routes.deleteVideo(video.id)) Delete Video
