@@ -37,7 +37,7 @@ export const postUploadVideo = async (req, res) => {
         title: title,
         description: description
     });
-    console.log(newVideo);
+    // console.log(newVideo);  
     res.redirect(routes.videoDetail(newVideo.id)); // id는 자동 생성.
 };
 

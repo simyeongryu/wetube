@@ -686,3 +686,43 @@ videoController upload post 함수에서
 console.log(req.file);
 
 하면 파일의 경로를 찾을 수 있다.
+
+## 몽고디비 comment로 비디오 수정하기
+
+mongod
+
+mongo
+
+show databases
+
+use databaseName
+
+show collections
+
+db.collectionName.remove({}) - 삭제
+
+uploads 를 위한 route 가 필요하다.
+
+app.js 에
+
+```js
+app.use("/uploads", express.static("uploads"));
+```
+
+추가. 
+
+express.static()은 directory에서 file을 보내주는 middleware
+
+어떤 것이 uploads에 접근하면 컨트롤러나 view를 확인하지 않고 file 만 확인한다.
+
+### # 3.7 파일관리법 설명.
+
+/uploads에 접근하면 uploads라는 디렉토리로 들어간다.
+
+user file들을 server에 저장하는 건 좋지 않다. 관리도 어렵고 서버 이전도 어렵다.
+
+user나 video 처럼 생성된 content는 server와 분리되어야 한다.
+
+static file은 JS나 CSS에서 사용하는 이미지 조각들이다.
+
+.gitignore에 uploads 디렉토리 추가하기
