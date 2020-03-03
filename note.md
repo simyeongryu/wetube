@@ -726,3 +726,23 @@ user나 video 처럼 생성된 content는 server와 분리되어야 한다.
 static file은 JS나 CSS에서 사용하는 이미지 조각들이다.
 
 .gitignore에 uploads 디렉토리 추가하기
+
+## :id
+
+controller에서 어떤 값을 갖고 있다는 것을 router 등에서 표현할 땐? `:`을 사용한다.
+
+`:id`에서 `id`는 req.params 등에서 나타나는 key 이름과 같다.
+
+```
+{ id: '5e5de4ab0ea9240609fb5195' }
+```
+
+만약 `:potato`로 바꾸면 req.params 는
+
+```
+{ potato: '5e5de4ab0ea9240609fb5195' }
+```
+
+가 된다. url에서 무언가를 받아오는 방법이다.
+
+## const video = await Video.findById();

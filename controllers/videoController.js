@@ -41,8 +41,19 @@ export const postUploadVideo = async (req, res) => {
     res.redirect(routes.videoDetail(newVideo.id)); // id는 자동 생성.
 };
 
-export const videoDetail = (req, res) => 
-    res.render("videoDetail", {pageTitle: "Video Detail"});
+export const videoDetail = async (req, res) => {
+    // console.log(req.params);
+    const {
+        params: {id}
+    } = req;
+    try {
+        const video = await Video.findById(id);
+        res.render("videoDetail", {pageTitle: "Video Detail", video});
+    } catch (error) {
+        res.redirect(routes.home);
+    }
+}
+    
 
 export const editVideo = (req, res) => 
     res.render("editVideo", {pageTitle: "Edit Video"});

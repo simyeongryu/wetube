@@ -1,4 +1,12 @@
 extends layouts/main
 
 block content
-    p videoDetail
+    .video__player
+        // 서버에 있는 파일이기 때문에 앞에 / 추가?
+        video(src=`/${video.fileUrl}`)
+    .video__info
+        a(href=routes.editVideo) Edit Video
+        h5.video__title=video.title
+        span.video__views=video.views
+        p.video__decription=video.description
+    
