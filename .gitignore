@@ -111,3 +111,6 @@ package-lock.json
 
 # uploads directory
 uploads
+
+# webpack static
+static

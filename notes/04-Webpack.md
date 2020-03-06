@@ -84,3 +84,41 @@ bpack-plugin@next
 
 `@next`를 붙이면 가장 최신의 베타 버젼 설치
 
+# #4.2 Styles with Webpack part Two
+
+> $npm install css-loader postcss-loader sass-loader
+
+### PostCSS
+
+`autoprefixer`
+
+브라우져 간 호환성을 위한 것.
+
+> $npm install autoprefixer
+> 참고: https://github.com/postcss/autoprefixer
+
+browelist
+
+> $ npm install node-sass
+
+# #4.3 ES6 with Webpack
+
+> $ npm install babel loader
+
+"dev:assets": "WEBPACK_ENV=development webpack -w"
+
+에서 `-w`는 파일을 watching 하다가 변화를 감지하면 webpack을 자동으로 다시 실행시켜준다.
+
+app.js에
+```js
+app.use("/static", express.static("static"));
+```
+
+dev: 서버시작, 에셋 시작.
+
+> @babel/polyfill
+> 참고: https://babeljs.io/docs/en/babel-polyfill
+
+충전솜. 브라우저의 구멍을 메워주는 자바스크립트 코드. regenerator-runtime/runtime error 해결
+
+webpack의 config에 변화를 주면 dev:assets를 재시작해야 한다.
