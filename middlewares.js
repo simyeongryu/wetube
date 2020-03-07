@@ -7,11 +7,27 @@ const multerVideo = multer({ dest: "uploads/videos/" }); // server에 있는 vid
 export const localsMiddlewares = (req, res, next) => {
     res.locals.siteName = "WeTube";
     res.locals.routes = routes;
-    res.locals.user = {
-        isAuthenticated: false,
-        id: 1
-    }
+    res.locals.user = req.user || null; // passport가 요청에 올린 user object
+    console.log(req.user);
     next(); // request 전달. 다음 함수 혹은 라우터로 전달
 };
 
+// 로그인하면 이용할 수 없도록 하는 함수.
+export const onlyPublic = (req, res, next) => {
+    if(req.user) {
+        res.redirect(routes.home);
+    } else {
+        next();
+    }
+};
+// 로그인해야 이용할 수 있도록 하는 함수.
+export const onlyPrivate = (req, res, next) => {
+    if(req.user) {
+        next();
+    } else {
+        res.redirect(routes.home);
+    }
+};
+
 export const uploadVideo = multerVideo.single("videoFile"); // single은 한 개의 파일만 upload 한다. // 안에 들어간 것은 HTML name tag
+

@@ -8,7 +8,6 @@ export const home = async (req, res) => {
         // await: 이 과정이 다 끝난 이후에 render 진행.
         // sort({_id: -1}) : 위 아래 순서를 바꾸겠다.아이디 기준으로 오름 차순에서 내림차순.
         const videos = await Video.find({}).sort({ _id: -1 });
-        console.log(videos);
         res.render("home", { pageTitle: "Home", videos });
     } catch (error) {
         console.log(error);
