@@ -96,3 +96,25 @@ session 의 옵션으로 쿠키 지속 시간 등을 수정할 수 있다.
 이 연결을 해야 서버가 재시작되어도 세션이 유지된다.
 
 이미 로그인된 사람은 Join으로 못들어가게 한다든지 등의 처리가 필요하다.
+
+# #6.6 Github Log In part One
+
+패스포트-github.
+
+```
+$ npm install passport-github
+```
+
+전반적인 사용법은 passport 도큐먼트에 나와있다.
+
+깃헙에서 어플리케이션을 생성해야 한다.
+
+https://github.com/settings/applications/new
+
+로 필요한 정보 기입.
+
+passport.js에 깃헙 스트레터지 입력.
+
+어플리케이션 등록 후 나오는 클라이언트 ID와 SECRET은 절대 남에게 알려주지 말자. env에 넣어둔다.
+
+깃헙 갔다가 돌아오면서 실행되는 함수도 필요. 유저컨트롤러 githublogincallback

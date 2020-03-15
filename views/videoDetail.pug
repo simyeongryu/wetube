@@ -1,13 +1,15 @@
 extends layouts/main
 
 block content
-    .video__player
-        // 서버에 있는 파일이기 때문에 앞에 / 추가?
-        video(src=`/${video.fileUrl}`)
-    .video__info
-        a(href=routes.editVideo(video.id)) Edit Video
-        h5.video__title=video.title
-        span.video__views=video.views
-        p.video__decription=video.description
-    .video__comments
-        span.video__comments-number #{video.comments.length} 개의 댓글
+    .video-detail__container
+        .video__player
+            // 서버에 있는 파일이기 때문에 앞에 / 추가?
+            video(src=`/${video.fileUrl}`)
+        .video__info
+            button
+                a(href=routes.editVideo(video.id)) Edit Video
+            h5.video__title=video.title
+            span.video__views=video.views
+            p.video__description=video.description
+        .video__comments
+            span.video__comment-number #{video.comments.length} 개의 댓글
