@@ -7,7 +7,7 @@ const multerVideo = multer({ dest: "uploads/videos/" }); // server에 있는 vid
 export const localsMiddlewares = (req, res, next) => {
     res.locals.siteName = "WeTube";
     res.locals.routes = routes;
-    res.locals.user = req.user || null; // passport가 요청에 올린 user object
+    res.locals.loggedUser = req.user || null; // passport가 요청에 올린 user object
     console.log(req.user);
     next(); // request 전달. 다음 함수 혹은 라우터로 전달
 };

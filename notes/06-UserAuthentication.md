@@ -118,3 +118,49 @@ passport.js에 깃헙 스트레터지 입력.
 어플리케이션 등록 후 나오는 클라이언트 ID와 SECRET은 절대 남에게 알려주지 말자. env에 넣어둔다.
 
 깃헙 갔다가 돌아오면서 실행되는 함수도 필요. 유저컨트롤러 githublogincallback
+
+# #6.7 Github Log In part Two
+
+route 만들기. GITHUB. GITHUB_CALLBACK
+
+라우터, 컨트롤러 처리. 
+
+깃헙 로그인으로 인증 -> 인증 완료 -> callbackURL 으로 이동하는 처리가 필요하다.
+
+passport 공식문서 startey-github 페이지 대로 작성한 후 view도 손본다 (sociallogin)
+
+require verify callback??
+
+로그아웃??
+
+```
+req.logout();
+```
+
+깃헙 인증 url로 보내 -> 깃헙에서 승인 -> 콜백 url로 callback 함수와 함께 보내. -> 내가 오키오키 해줘야 함.
+
+# #6.8 Github Log In part Three
+
+아이디 이메일 이름 아바타만 신경쓴다.
+
+함수에서 사용하지 않는 파라미터는 '_'로 바꿔줘도 된다. 그냥 지우면 파라미터 순서가 바뀌니까 절대 그냥 지우지 말자
+
+예
+```js
+// 아래 함수에서 accessToken, refreshToken을 사용하지 않는다고 가정하면
+export const githubLoginCallback = async (accessToken, refreshToken, profile, cb) => { 블라블라}
+
+// 이렇게 바꿀 수 있다.
+export const githubLoginCallback = async (_, __, profile, cb) => { 블라블라}
+```
+
+# #6.9 Recap and User Profile
+
+깃헙
+
+깃헙 웹사이트로 이동 -> 깃헙은 우리한테 사용자 정보를 줌 callback url로 이동
+-> 우리는 githubLoginCallback 함수 실행
+-> cd(error, user)를 리턴 
+-> error가 있으면 그냥 끝
+-> user가 있으면 쿠키를 만들고, 쿠키를 저장하고 쿠키를 보낸다 세션.
+

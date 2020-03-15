@@ -40,13 +40,39 @@ export const postLogin = passport.authenticate("local", {
 });
 
 // 깃헙 로그인을 실행하는 함수.
-export const githubLogin = () => {
-    passport.authenticate("github")
+export const githubLogin = passport.authenticate("github");
+
+
+// 깃헙 로그인 인증 시 사용되는 함수
+export const githubLoginCallback = async (accessToken, refreshToken, profile, cb) => {
+    const { _json: { id, avatar_url: avatarUrl, name, email} } = profile;
+    console.log(profile._json);
+    try {
+        // 깃헙으로 로그인하려는 유저와 email이 같은 유저가 이미 있는지 확인
+        const user = await User.findOne({ email });
+        // 있다면 해당유저의 정보 업데이트
+        if (user) {
+            user.githubId = id;
+            user.save();
+            // cd(error, cookie에 넣을 값);
+            return cb(null, user); // 여기서 값을 return 하므로 else 필요없음
+        }
+        // 없다면 신규 유저 생성
+        const newUser = await User.create({
+            name,
+            email,
+            avatarUrl,
+            githubId: id
+        });
+        return cb(null, newUser);
+    } catch (error) {
+        return cb(error); // 에러가 발생하면 인증 후 보내지는 콜백함수에 에러를 집어넣는다.
+    }
 };
 
-// 깃헙 로그인을 마치고 돌아오는 함수
-export const githubLoginCallback = (accessToken, refreshToken, profile, cb) => {
-    console.log(accessToken, refreshToken, profile, cb)
+// 깃헙 로그인이 성공한 뒤 홈 화면으로 보내는 함수
+export const postGithubLogin = (req, res) => {
+    res.redirect(routes.home);
 };
 
 // 로그아웃
@@ -55,7 +81,11 @@ export const logout = (req, res) => {
     res.redirect(routes.home);
 };
 
-export const users = (req, res) => res.render("users", {pageTitle: "Users"});
+export const me = (req, res) => {
+    res.render("userDetail", { pageTitle: "UserDetail", user: req.user })
+};
+
+export const users = (req, res) => res.render("users", { pageTitle: "Users"});
 
 export const editProfile = (req, res) => res.render("editProfile", {pageTitle: "EditProfile"});
 
