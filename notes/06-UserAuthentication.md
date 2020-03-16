@@ -164,3 +164,65 @@ export const githubLoginCallback = async (_, __, profile, cb) => { 블라블라}
 -> error가 있으면 그냥 끝
 -> user가 있으면 쿠키를 만들고, 쿠키를 저장하고 쿠키를 보낸다 세션.
 
+자기 프로필을 보는 링크와 타인의 프로필을 보는 링크를 다르게 설정하자. ㄱ래야 타인의 프로필을 볼 때`
+
+# #6.10 User Detail + Facebook Login Part One
+
+페이스북 어플리케이션 등록
+```
+developers.facebook.com
+```
+
+passport-facebook 설치
+```
+$ npm install passport-facebook
+```
+
+페이스북 APP ID 와 SECRET을 env에 등록핳고 passport strategy 설정
+
+기본적으로 깃헙과 비슷하다. 
+
+근데 페이스북은 거지같이 힘들다.
+
+인증은 크게보면 거의 다 비슷하다.
+
+passport.js에 strategy 등록 - 모든 게 잘 돌아갈 때 실행시켜야 하는 함수는 이거!(콜백함수 등록)
+
+# #6.11 Facebook Login Part Two
+
+기본적으로 그냥 하면 이메일이나 프로필 등 정보를 얻지 못한다.
+
+developers.facebook.com 로 돌아가서 status 상태를 ON으로 바꾼다
+
+개인정보 처리방침 어ㄷ쩌구가 나오면 아무 링크나 준다.
+
+앱 검수 -> 내 권한 및 기능 : 이메일 등 정보를 얻을 수 있는 권한을 받는다.
+
+```
+URL을 읽어들일 수 없음: 앱 도메인에 포함되어 있지 않은 URL입니다. 이 URL을 읽어들이려면 앱 설정에서 앱 도메인 필드에 앱의 모든 도메인과 서브 도메인을 추가하세요.
+```
+
+즉, HTTPS로 로그인하라는 메세지가 뜬다.
+
+로컬 호스트를 HTTPS 로 만드는 건 쉽지 않다.
+
+그래서 우린 localtunnel를 사용한다.
+
+https://localtunnel.github.io/www/
+
+```
+$ npm install -g localtunnel
+```
+설치 후
+
+```
+$ lt --port 4000
+```
+실행 (우리 서버가 4000번에서 실행되고 있으니까.)
+
+위의 명령어를 실행하면 어떤 url을 던져 준다.
+
+로컬 터널은 우리 홈페이지가 HTTPS인 것처럼 보이게 한다. 이건 테스트용이지 배포용이 아니다.
+
+
+
