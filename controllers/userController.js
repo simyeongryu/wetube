@@ -45,7 +45,6 @@ export const githubLogin = passport.authenticate("github");
 // 깃헙 로그인 시 사용자가 있는지 인증하는 함수
 export const githubLoginCallback = async (accessToken, refreshToken, profile, cb) => {
   const { _json: { id, avatar_url: avatarUrl, name, email } } = profile;
-  console.log(profile._json);
   try {
     // 깃헙으로 로그인하려는 유저와 email이 같은 유저가 이미 있는지 확인
     const user = await User.findOne({ email });
@@ -74,16 +73,35 @@ export const postGithubLogin = (req, res) => {
   res.redirect(routes.home);
 };
 
-// 페이스북으로 보내는 함수
-export const facebookLogin = passport.authenticate("facebook");
+// 네이버 로그인을 실행하는 함수.
+export const naverLogin = passport.authenticate("naver");
 
-// 페이스북 로그인 시 사용자가 있는지 인증하는 함수
-export const facebookLoginCallback = (accessToken, refreshToken, profile, cb) => {
-  console.log(accessToken, refreshToken, profile, cb);
-};
+// 네이버 로그인 시 사용자가 있는지 인증하는 함수
+export const naverLoginCallback = async (accessToken, refreshToken, profile, done) => {
+  const { id, displayName: name, _json: { email, profile_image: avatarUrl } } = profile;
+  try {
+    const user = await User.findOne({ email });
 
-// 페이스북 로그인이 성공한 뒤 홈 화면으로 보내는 함수
-export const postFacebookLogin = (req, res) => {
+    if (user) {
+      user.naverId = id;
+      user.save();
+      return done(null, user)
+    }
+
+    const newUser = await User.create({
+      name,
+      email,
+      avatarUrl,
+      naverId: id
+    });
+    return done(null, newUser);
+  } catch (e) {
+    return done(e);
+  }
+}
+
+// 네이버 로그인이 성공한 뒤 홈 화면으로 보내는 함수
+export const postNaverLogin = (req, res) => {
   res.redirect(routes.home);
 };
 
@@ -99,7 +117,25 @@ export const me = (req, res) => {
 
 export const users = (req, res) => res.render("users", { pageTitle: "Users" });
 
-export const editProfile = (req, res) => res.render("editProfile", { pageTitle: "EditProfile" });
+export const getEditProfile = (req, res) => res.render("editProfile", { pageTitle: "EditProfile" });
+
+export const postEditProfile = async (req, res) => {
+  const {
+    body: { name, email },
+    file
+  } = req;
+  try {
+    // ID로 유저 찾고 수정.
+    await User.findByIdAndUpdate(req.user.id, {
+      name,
+      email,
+      avatarUrl: file ? file.path : req.user.avatarUrl // 아바타를 수정하지 않는다면 기존 아바타 유지
+    });
+    res.redirect(`/users${routes.me}`);
+  } catch (e) {
+    res.render("editProfile", { pageTitle: "EditProfile" });
+  }
+};
 
 export const changePassword = (req, res) => res.render("changePassword", { pageTitle: "ChangePassword" });
 
@@ -113,5 +149,4 @@ export const userDetail = async (req, res) => {
     res.redirect(routes.home)
   }
 };
-
 

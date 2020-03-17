@@ -1,7 +1,14 @@
 extends layouts/main
 
 block content
-    .user-profile
-        .user-profile__header
-            img.user-profile__avatar(src=user.avatarUrl)
-            h4.user-profile__username=user.name
+  .user-profile
+    .user-profile__header
+      img.user-profile__avatar(src=user.avatarUrl)
+      h4.user-profile__username=user.name
+  // 만약 상세 프로필 페이지인데, 로그인한 회원이 해당 프로필의 회원이라면 정보를 수정할 수 있게 함 
+  if user.id === loggedUser.id
+    .user-profile__btns
+      a(href=`/users${routes.editProfile}`)
+        button Edit Profile
+      a(href=`/users${routes.changePassword}`)
+        button Change Password

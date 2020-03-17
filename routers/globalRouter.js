@@ -10,9 +10,8 @@ import {
     logout,
     githubLogin,
     postGithubLogin,
-    facebookLogin,
-    postFacebookLogin
-
+    naverLogin,
+    postNaverLogin
 } from "../controllers/userController";
 import { onlyPublic, onlyPrivate } from "../middlewares";
 
@@ -30,8 +29,8 @@ globalRouter.get(routes.logout, onlyPrivate, logout);
 // GITHUB
 globalRouter.get(routes.github, githubLogin);
 globalRouter.get(routes.githubCallback, passport.authenticate("github", { failureRedirect: routes.login }), postGithubLogin);
-// FACEBOOK
-globalRouter.get(routes.facebook, facebookLogin);
-globalRouter.get(routes.facebookCallback, passport.authenticate("facebook", { failureRedirect: routes.login }), postFacebookLogin);
+// NAVER
+globalRouter.get(routes.naver, naverLogin);
+globalRouter.get(routes.naverCallback, passport.authenticate("naver", { failureRedirect: routes.login }), postNaverLogin);
 
 export default globalRouter;
