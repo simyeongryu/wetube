@@ -435,6 +435,9 @@ input[type="submit"] {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     font-size: 16px; }
+    .videoPlayer .videoPlayer__controls .videoPlayer__volume {
+      position: absolute;
+      bottom: 50px; }
     .videoPlayer .videoPlayer__controls .videoPlayer__column:first-child {
       display: -webkit-box;
       display: -webkit-flex;

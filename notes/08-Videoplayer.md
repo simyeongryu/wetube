@@ -51,3 +51,11 @@ totalTime
 
 loadedmetadata 이벤트 사용
 
+# #8.5 Volume Bar part One
+
+# #8.6 Volume Bar part Two
+
+input range 이용.
+
+재생 바 구현하자.
+
