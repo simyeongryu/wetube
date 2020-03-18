@@ -6,7 +6,19 @@ const UserSchema = new mongoose.Schema({
   email: String,
   avatarUrl: String,
   naverId: Number,
-  githubId: Number
+  githubId: Number,
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment"
+    }
+  ],
+  videos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Video"
+    }
+  ]
 });
 
 // 어떤 것을 username으로 할 건지 결정

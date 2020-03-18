@@ -45,19 +45,21 @@ export const postUploadVideo = async (req, res) => {
     // Video model schema: req.body || req.file 변수
     fileUrl: path,
     title: title,
-    description: description
+    description: description,
+    creator: req.user.id // 현재 로그인한 유저의 ID
   });
-  // console.log(newVideo);
+  req.user.videos.push(newVideo.id); // User 모델에 값 저장
+  req.user.save(); // commit
   res.redirect(routes.videoDetail(newVideo.id)); // id는 자동 생성.
 };
 
 export const videoDetail = async (req, res) => {
-  // console.log(req.params);
   const {
     params: { id }
   } = req;
   try {
-    const video = await Video.findById(id);
+    const video = await Video.findById(id).populate("creator"); // populate는 ObjectId를 객체로 만든다.
+    console.log(video);
     res.render("videoDetail", { pageTitle: video.title, video });
   } catch (error) {
     console.log(error);
@@ -72,7 +74,13 @@ export const getEditVideo = async (req, res) => {
   } = req;
   try {
     const video = await Video.findById(id);
-    res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
+    // populate 가 없으면 객체가 아니라 id 값. 
+    // 아래 if 문은 url로의 접근을 막는다. 본인이 아니면 수정할 수 없다.
+    if (video.creator !== req.user.id) {
+      throw Error();
+    } else {
+      res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
+    }
   } catch (error) {
     console.log(error);
     res.redirect(routes.home);
@@ -100,7 +108,12 @@ export const deleteVideo = async (req, res) => {
     params: { id }
   } = req;
   try {
-    await Video.findOneAndRemove({ _id: id });
+    // 작성자만 삭제할 수 있게 처리
+    if (video.creator !== req.user.id) {
+      throw Error();
+    } else {
+      await Video.findOneAndRemove({ _id: id });
+    }
   } catch (error) {
     console.log(error);
   }

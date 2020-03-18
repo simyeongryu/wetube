@@ -133,16 +133,40 @@ export const postEditProfile = async (req, res) => {
     });
     res.redirect(`/users${routes.me}`);
   } catch (e) {
-    res.render("editProfile", { pageTitle: "EditProfile" });
+    res.redirect(routes.editProfile);
   }
 };
 
-export const changePassword = (req, res) => res.render("changePassword", { pageTitle: "ChangePassword" });
+export const getChangePassword = (req, res) => res.render("changePassword", { pageTitle: "ChangePassword" });
+
+export const postChangePassword = async (req, res) => {
+  const {
+    body: { oldPassword, newPassword, newPassword2 }
+  } = req;
+
+  try {
+    // 비밀번호 확인
+    if (newPassword !== newPassword2) {
+      res.status(400);
+      res.redirect(routes.changePassword)
+      return;
+    }
+    // 비밀번호 변경. passport.local.pongoose의 메소드
+    await req.user.changePassword(oldPassword, newPassword);
+    res.redirect(`/users${routes.me}`);
+  } catch (e) {
+    res.status(400);
+    res.redirect(`/users${routes.changePassword}`);
+  }
+};
 
 export const userDetail = async (req, res) => {
-  const { params: { id } } = req;
+  const {
+    params: { id }
+  } = req;
   try {
-    const user = await User.findById(id);
+    // 유저 상세보기에 해당 유저가 업로드한 영상을 보기 위한 처리
+    const user = await User.findById(id).populate("videos");
     res.render("userDetail", { pageTitle: "UserDetail", user })
   } catch (e) {
     // 존재하지 않는 ID의 유저 탐색 시 홈으로 이동.

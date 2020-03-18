@@ -2,7 +2,7 @@ extends layouts/main
 include mixins/videoBlock
 
 block content
-    .videos
+    .home-videos
         // videos가 되는 객체를 videoController에서 console.log 해보면 확인 가능
         each item in videos
             +videoBlock({
