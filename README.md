@@ -3,13 +3,18 @@ Nomad Coder Wetube Clone Coding
 
 ## Pages
 
-- [ ] Home
+- [x] Home
 - [x] Join
 - [x] Search
 - [x] login 
-- [ ] user detail
+- [x] user detail
 - [x] edit profile
-- [ ] change password
-- [ ] upload 
-- [ ] video detail
-- [ ] edit video
+- [x] change password
+- [x] upload 
+- [x] video detail
+- [x] edit video
+
+### 남은 거
+
+- [ ] avatarUrl 버그 수정
+- [ ] 비디오 재생 바 구현
