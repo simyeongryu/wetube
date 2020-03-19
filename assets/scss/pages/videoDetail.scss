@@ -36,6 +36,24 @@
     margin-top: 25px;
     .video__comment-number {
       font-size: 18px;
+      display: block;
+      text-align: center;
+    }
+    .add__comments {
+      margin-top: 20px;
+    }
+    .video__coments-list {
+      margin-top: 50px;
+      li {
+        background-color: deepskyblue;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 20px;
+        border-bottom-right-radius: 0px;
+      }
+      :not(:last-child) {
+        margin-bottom: 15px;
+      }
     }
   }
 }

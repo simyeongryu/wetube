@@ -2,21 +2,33 @@ extends layouts/main
 include mixins/videoPlayer
 
 block content
-    .video-detail__container
-        +videoPlayer({
-            src: video.fileUrl
-        })
-        .video__info
-            // 로그인하지 않아도 비디오 상세 페이지 접근 가능(loggedUser는 로그인 하지 않으면 null) 
-            // && 본인의 비디오만 수정 가능하게 처리 
-            if loggedUser && video.creator.id === loggedUser.id
-                a(href=routes.editVideo(video.id))
-                    button Edit Video
-            h5.video__title=video.title
-            span.video__views=`${video.views} views`
-            p.video__description=video.description
-            .video__author
-                |Upload by &nbsp;
-                a(href=routes.userDetail(video.creator.id))=video.creator.name
-        .video__comments
-            span.video__comment-number #{video.comments.length} 개의 댓글
+  .video-detail__container
+    +videoPlayer({
+      src: video.fileUrl
+    })
+    .video__info
+      // 로그인하지 않아도 비디오 상세 페이지 접근 가능(loggedUser는 로그인 하지 않으면 null) 
+      // && 본인의 비디오만 수정 가능하게 처리 
+      if loggedUser && video.creator.id === loggedUser.id
+        a(href=routes.editVideo(video.id))
+          button Edit Video
+      h5.video__title=video.title
+      span.video__views=`${video.views} views`
+      p.video__description=video.description
+      .video__author
+        |Upload by &nbsp;
+        a(href=routes.userDetail(video.creator.id))=video.creator.name
+    .video__comments
+      span.video__comment-number
+        |댓글&nbsp;
+        span#commentNumber=video.comments.length
+        |&nbsp;개
+      form.add__comments#addComment
+        if loggedUser
+          input(type="text" placeholder="Add a comment" name="comment")
+        else 
+          input(type="text" placeholder="Please Login" readonly)
+      ul.video__coments-list#commentsList
+        each comment in video.comments.reverse()
+          li
+            span=comment.text

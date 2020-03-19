@@ -7,8 +7,9 @@ import mongoose from "mongoose";
 import passport from "passport"; // req.user 객체를 사용하기 위해 localsMiddlewares 보다 먼저 import
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import {localsMiddlewares} from "./middlewares";
+import { localsMiddlewares } from "./middlewares";
 import routes from "./routes";
+import apiRouter from "./routers/apiRouter";
 import globalRouter from "./routers/globalRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
@@ -45,5 +46,6 @@ app.use(localsMiddlewares);
 app.use(routes.home, globalRouter);
 app.use(routes.users, userRouter);
 app.use(routes.videos, videoRouter);
+app.use(routes.api, apiRouter);
 
 export default app;

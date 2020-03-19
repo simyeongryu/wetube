@@ -1,5 +1,6 @@
 import routes from "../routes";
 import Video from "../models/Video"; // model. element가 아니라.
+import Comment from "../models/Comment"; // 
 
 /** route가 사용할 함수를 정의한 뒤 export */
 /** for global router */
@@ -58,7 +59,7 @@ export const videoDetail = async (req, res) => {
     params: { id }
   } = req;
   try {
-    const video = await Video.findById(id).populate("creator"); // populate는 ObjectId를 객체로 만든다.
+    const video = await Video.findById(id).populate("creator").populate("comments"); // populate는 ObjectId를 객체로 만든다.
     console.log(video);
     res.render("videoDetail", { pageTitle: video.title, video });
   } catch (error) {
@@ -119,4 +120,45 @@ export const deleteVideo = async (req, res) => {
   }
   // try와 catch의 결과가 res.redirect(routes.home 으로 똑같다.)
   res.redirect(routes.home);
+};
+
+// api: 템플릿 렌더링 없이 서버와 즉각 대화
+export const postRegisterView = async (req, res) => {
+  const {
+    params: { id }
+  } = req;
+  try {
+    const video = await Video.findById(id);
+    video.views += 1;
+    video.save();
+    res.status(200);
+  } catch (err) {
+    console.log(err);
+    res.status(400); // 잘못된 요청
+  } finally {
+    res.end();
+  }
+};
+
+// api 댓글달기
+export const postAddComment = async (req, res) => {
+  const {
+    params: { id },
+    body: { comment },
+    user
+  } = req;
+  try {
+    const video = await Video.findById(id); // 비디오 조회
+    const newComment = await Comment.create({ // 댓글 생성
+      text: comment,
+      creator: user.id
+    });
+    video.comments.push(newComment.id); // 생성된 댓글 비디오에 저장
+    video.save();
+  } catch (e) {
+    res.status(400);
+    console.log(e);
+  } finally {
+    res.end();
+  }
 };

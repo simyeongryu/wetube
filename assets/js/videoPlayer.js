@@ -8,6 +8,16 @@ const fullScreenButton = document.querySelector("#fullScreenButton");
 const currentTime = document.querySelector("#currentTime");
 const totalTime = document.querySelector("#totalTime");
 
+// 조회수 증가
+const registerView = () => {
+  const videoId = window.location.href.split("/videos/")[1];
+  // 원한다면 await 등의 비동기 처리가 가능하나 여기선 별로 할 필요가 없다.
+  // get이 기본값.
+  fetch(`/api/${videoId}/view`, {
+    method: "POST"
+  });
+};
+
 function handleVolumeClick() {
   if (videoPlayer.muted) { // 음소거 상태면?
     videoPlayer.muted = false;
@@ -93,6 +103,7 @@ function setTotalTime() {
 }
 
 function handleEnded() {
+  registerView(); // 동영상이 끝나면 조회수 증가
   videoPlayer.currentTime = 0; // 현재 재생시간을 0으로 세팅
   playButton.innerHTML = '<i class="fas fa-play"></i>'; // 버튼 모양 변경
 }

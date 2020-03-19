@@ -522,4 +522,22 @@ input[type="submit"] {
   .video-detail__container .video__comments {
     margin-top: 25px; }
     .video-detail__container .video__comments .video__comment-number {
-      font-size: 18px; }
+      font-size: 18px;
+      display: block;
+      text-align: center; }
+    .video-detail__container .video__comments .add__comments {
+      margin-top: 20px; }
+    .video-detail__container .video__comments .video__coments-list {
+      margin-top: 50px; }
+      .video-detail__container .video__comments .video__coments-list li {
+        background-color: deepskyblue;
+        color: white;
+        padding: 15px 30px;
+        -webkit-border-radius: 20px;
+           -moz-border-radius: 20px;
+                border-radius: 20px;
+        -webkit-border-bottom-right-radius: 0px;
+           -moz-border-radius-bottomright: 0px;
+                border-bottom-right-radius: 0px; }
+      .video-detail__container .video__comments .video__coments-list :not(:last-child) {
+        margin-bottom: 15px; }

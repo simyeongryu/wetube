@@ -24,9 +24,15 @@ const DELETE_VIDEO = "/:id/delete";
 // Gihub
 const GITHUB = "/auth/github";
 const GITHUB_CALLBACK = "/auth/github/callback";
+
 // Naver
 const NAVER = "/auth/naver";
 const NAVER_CALLBACK = "/auth/naver/callback";
+
+// API : server와 통신하기 위한 URL
+const API = "/api";
+const REGISTER_VIEW = "/:id/view"
+const ADD_COMMENT = "/:id/comment"
 
 const routes = {
     home: HOME,
@@ -71,7 +77,10 @@ const routes = {
     githubCallback: GITHUB_CALLBACK,
     naver: NAVER,
     naverCallback: NAVER_CALLBACK,
-    me: ME
+    me: ME,
+    api: API,
+    registerView: REGISTER_VIEW,
+    addComment: ADD_COMMENT
 }
 
 export default routes;
