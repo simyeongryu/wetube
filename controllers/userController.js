@@ -13,18 +13,20 @@ export const postJoin = async (req, res, next) => {
     body: { name, email, password, password2 }
   } = req;
 
-  if (password !== password2) { // 비밀번호 확인 유효성 검사
+  if (password !== password2) {
+    // 비밀번호 확인 유효성 검사
     res.status(400); // 400 상태코드 전달
-    res.render("join", { pageTitle: "Join" })
+    res.render("join", { pageTitle: "Join" });
   } else {
     // Register User
     try {
-      const user = await User({ // user 생성
+      const user = await User({
+        // user 생성
         name,
         email
       });
       await User.register(user, password); // db에 등록
-      next(); // 가입 이후 바로 로그인 시키기 위해 다음 미들웨어로 넘긴다. 
+      next(); // 가입 이후 바로 로그인 시키기 위해 다음 미들웨어로 넘긴다.
     } catch (error) {
       console.log(error);
       res.redirect(routes.home);
@@ -32,7 +34,8 @@ export const postJoin = async (req, res, next) => {
   }
 };
 
-export const getLogin = (req, res) => res.render("login", { pageTitle: "LogIn" });
+export const getLogin = (req, res) =>
+  res.render("login", { pageTitle: "LogIn" });
 
 export const postLogin = passport.authenticate("local", {
   failureRedirect: routes.login, // 로그인에 실패했다면(username(email)이나 password가 틀려서) 로그인 화면 redirect
@@ -43,8 +46,15 @@ export const postLogin = passport.authenticate("local", {
 export const githubLogin = passport.authenticate("github");
 
 // 깃헙 로그인 시 사용자가 있는지 인증하는 함수
-export const githubLoginCallback = async (accessToken, refreshToken, profile, cb) => {
-  const { _json: { id, avatar_url: avatarUrl, name, email } } = profile;
+export const githubLoginCallback = async (
+  accessToken,
+  refreshToken,
+  profile,
+  cb
+) => {
+  const {
+    _json: { id, avatar_url: avatarUrl, name, email }
+  } = profile;
   try {
     // 깃헙으로 로그인하려는 유저와 email이 같은 유저가 이미 있는지 확인
     const user = await User.findOne({ email });
@@ -77,15 +87,24 @@ export const postGithubLogin = (req, res) => {
 export const naverLogin = passport.authenticate("naver");
 
 // 네이버 로그인 시 사용자가 있는지 인증하는 함수
-export const naverLoginCallback = async (accessToken, refreshToken, profile, done) => {
-  const { id, displayName: name, _json: { email, profile_image: avatarUrl } } = profile;
+export const naverLoginCallback = async (
+  accessToken,
+  refreshToken,
+  profile,
+  done
+) => {
+  const {
+    id,
+    displayName: name,
+    _json: { email, profile_image: avatarUrl }
+  } = profile;
   try {
     const user = await User.findOne({ email });
 
     if (user) {
       user.naverId = id;
       user.save();
-      return done(null, user)
+      return done(null, user);
     }
 
     const newUser = await User.create({
@@ -98,7 +117,7 @@ export const naverLoginCallback = async (accessToken, refreshToken, profile, don
   } catch (e) {
     return done(e);
   }
-}
+};
 
 // 네이버 로그인이 성공한 뒤 홈 화면으로 보내는 함수
 export const postNaverLogin = (req, res) => {
@@ -112,12 +131,13 @@ export const logout = (req, res) => {
 };
 
 export const me = (req, res) => {
-  res.render("userDetail", { pageTitle: "UserDetail", user: req.user })
+  res.render("userDetail", { pageTitle: "UserDetail", user: req.user });
 };
 
 export const users = (req, res) => res.render("users", { pageTitle: "Users" });
 
-export const getEditProfile = (req, res) => res.render("editProfile", { pageTitle: "EditProfile" });
+export const getEditProfile = (req, res) =>
+  res.render("editProfile", { pageTitle: "EditProfile" });
 
 export const postEditProfile = async (req, res) => {
   const {
@@ -129,7 +149,11 @@ export const postEditProfile = async (req, res) => {
     await User.findByIdAndUpdate(req.user.id, {
       name,
       email,
+      /**
       avatarUrl: file ? file.path : req.user.avatarUrl // 아바타를 수정하지 않는다면 기존 아바타 유지
+      /*/
+      avatarUrl: file ? file.location : req.user.avatarUrl // 아바타를 수정하지 않는다면 기존 아바타 유지
+      /**/
     });
     res.redirect(`/users${routes.me}`);
   } catch (e) {
@@ -137,7 +161,8 @@ export const postEditProfile = async (req, res) => {
   }
 };
 
-export const getChangePassword = (req, res) => res.render("changePassword", { pageTitle: "ChangePassword" });
+export const getChangePassword = (req, res) =>
+  res.render("changePassword", { pageTitle: "ChangePassword" });
 
 export const postChangePassword = async (req, res) => {
   const {
@@ -148,7 +173,7 @@ export const postChangePassword = async (req, res) => {
     // 비밀번호 확인
     if (newPassword !== newPassword2) {
       res.status(400);
-      res.redirect(routes.changePassword)
+      res.redirect(routes.changePassword);
       return;
     }
     // 비밀번호 변경. passport.local.pongoose의 메소드
@@ -167,10 +192,9 @@ export const userDetail = async (req, res) => {
   try {
     // 유저 상세보기에 해당 유저가 업로드한 영상을 보기 위한 처리
     const user = await User.findById(id).populate("videos");
-    res.render("userDetail", { pageTitle: "UserDetail", user })
+    res.render("userDetail", { pageTitle: "UserDetail", user });
   } catch (e) {
     // 존재하지 않는 ID의 유저 탐색 시 홈으로 이동.
-    res.redirect(routes.home)
+    res.redirect(routes.home);
   }
 };
-

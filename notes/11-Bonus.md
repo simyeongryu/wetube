@@ -28,6 +28,54 @@ Amazon Software Development Kit,
 
 multer-s3
 ```
-$ npm i aws-skd
+$ npm i aws-sdk
 $ npm i multer-s3
 ```
+
+# #11.1 Multer Uploads to AWS S3
+
+middlewares 수정
+
+import
+```js
+import multerS3 from "multer-s3";
+import aws from "aws-sdk";
+```
+
+multer 재설정
+
+```js
+const multerVideo = multer({
+  storage: multerS3({
+    s3, // s3 유저 관련 정보
+    acl: "public-read", // access control list
+    bucket: "simyeong-wetube/video", // 만들어둔 bucket에 video라는 디렉토리 생성
+    region: "ap-northeast-2"
+  })
+});
+```
+
+여기까지 하면 s3에 업로드는 된다.
+
+이제 controller 수정
+
+file.path로 들어오던 파일 url 값이 file.location으로 들어온다. 관련해서 수정해준다.
+
+mixins 수정
+
+videoPlayer.pug
+```pug
+video(src=`/${video.src}`)
+
+// 을
+
+video(src=video.src)
+```
+
+아바타도 동일한 작업을 한다.
+
+내 서버에 절대 유저의 파일을 저장하지 말자.
+
+그 파일이 바이러스면 내 서버는 망ㅎ나다.
+
+많은 서버가 필요해지면 돈이 많이 들고 여러 서버를 구해야 한다. 그러면 같은 파일을 여러 개 복사해야 하는 불상사가 생길 수도 있다.

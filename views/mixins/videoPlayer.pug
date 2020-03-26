@@ -1,6 +1,7 @@
 mixin videoPlayer(video={})
   .videoPlayer#videoPlayer
-    video(src=`/${video.src}`)
+    // 외부서버에 저장하지 않을 땐 비디오 src왼쪽에 '/'를 달아줘야 한다.
+    video(src=video.src)
     .videoPlayer__controls
       .videoPlayer__column
         // HTMLMedia의 볼륨은 최소 0 최대 1이다.

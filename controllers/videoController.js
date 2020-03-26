@@ -1,6 +1,6 @@
 import routes from "../routes";
 import Video from "../models/Video"; // model. element가 아니라.
-import Comment from "../models/Comment"; // 
+import Comment from "../models/Comment"; //
 
 /** route가 사용할 함수를 정의한 뒤 export */
 /** for global router */
@@ -26,7 +26,7 @@ export const search = async (req, res) => {
     // 내가 검색한 단어를 포함하는 것들을 검색 // "i" 는 insensitive. 대소문자 구분하지 않음.
     videos = await Video.find({
       title: { $regex: searchingFor, $options: "i" }
-    })
+    });
   } catch (error) {
     console.log(error);
   }
@@ -40,11 +40,20 @@ export const getUploadVideo = (req, res) =>
 export const postUploadVideo = async (req, res) => {
   const {
     body: { title, description }, // form 으로부터 받아오는 것들
+    /**
     file: { path } // multer를 통해 얻는 것들. req.file.path
+    /*/
+    file: { location } // multer가 외부 서버에 저장할 때 url을 location에 담는다.
+    /**/
   } = req;
+  console.log(req.file);
   const newVideo = await Video.create({
     // Video model schema: req.body || req.file 변수
+    /**
     fileUrl: path,
+    /*/
+    fileUrl: location,
+    /**/
     title: title,
     description: description,
     creator: req.user.id // 현재 로그인한 유저의 ID
@@ -59,7 +68,9 @@ export const videoDetail = async (req, res) => {
     params: { id }
   } = req;
   try {
-    const video = await Video.findById(id).populate("creator").populate("comments"); // populate는 ObjectId를 객체로 만든다.
+    const video = await Video.findById(id)
+      .populate("creator")
+      .populate("comments"); // populate는 ObjectId를 객체로 만든다.
     console.log(video);
     res.render("videoDetail", { pageTitle: video.title, video });
   } catch (error) {
@@ -75,7 +86,7 @@ export const getEditVideo = async (req, res) => {
   } = req;
   try {
     const video = await Video.findById(id);
-    // populate 가 없으면 객체가 아니라 id 값. 
+    // populate 가 없으면 객체가 아니라 id 값.
     // 아래 if 문은 url로의 접근을 막는다. 본인이 아니면 수정할 수 없다.
     if (video.creator !== req.user.id) {
       throw Error();
@@ -149,7 +160,8 @@ export const postAddComment = async (req, res) => {
   } = req;
   try {
     const video = await Video.findById(id); // 비디오 조회
-    const newComment = await Comment.create({ // 댓글 생성
+    const newComment = await Comment.create({
+      // 댓글 생성
       text: comment,
       creator: user.id
     });
