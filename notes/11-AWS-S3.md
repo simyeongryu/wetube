@@ -79,3 +79,47 @@ video(src=video.src)
 그 파일이 바이러스면 내 서버는 망ㅎ나다.
 
 많은 서버가 필요해지면 돈이 많이 들고 여러 서버를 구해야 한다. 그러면 같은 파일을 여러 개 복사해야 하는 불상사가 생길 수도 있다.
+
+# #11.2 Blob Duration Bug
+
+blob(file)의 길이를 알려주는 라이브러리
+
+> https://github.com/evictor/get-blob-duration
+
+```shell
+$ npm i get-blob-duration
+```
+
+get-blob-duration 을 설치하고 나서
+front 쪽 서버 구동 시 (npm run dev:assests 할 때),
+```
+Module not found: Error: Can't resolve '@babel/runtime/helpers/builtin/taggedTemplateLiteralLoose' in '/home/node/app/node_modules/yup/lib'
+```
+이런 에러 발생 시
+
+```shell
+$ npm add @babel/runtime
+```
+
+한 뒤 다시 npm run dev:assests.
+
+`videoPlayer.js` 파일 수정(totalTime 부분)
+
+AWS S3 permission -> CORS 설정 -> 설정 저장(placeholder로 떠있는 내용을 개발자 도구를 이용해 복사하여 붙여넣는다.)
+
+누구나 어떤 파일이든 GET 할 수 있게 한다.
+
+```
+<!-- Sample policy -->
+<CORSConfiguration>
+	<CORSRule>
+		<AllowedOrigin>*</AllowedOrigin>
+		<AllowedMethod>GET</AllowedMethod>
+		<MaxAgeSeconds>3000</MaxAgeSeconds>
+		<AllowedHeader>Authorization</AllowedHeader>
+	</CORSRule>
+</CORSConfiguration>
+```
+
+#### 샘플 비디오 영상
+> http://techslides.com/sample-webm-ogg-and-mp4-video-files-for-html5

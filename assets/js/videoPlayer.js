@@ -1,3 +1,5 @@
+import getBlobDuration from "get-blob-duration";
+
 // DOM
 const videoContainer = document.getElementById("videoPlayer");
 const videoPlayer = document.querySelector("#videoPlayer video");
@@ -19,7 +21,8 @@ const registerView = () => {
 };
 
 function handleVolumeClick() {
-  if (videoPlayer.muted) { // 음소거 상태면?
+  if (videoPlayer.muted) {
+    // 음소거 상태면?
     videoPlayer.muted = false;
     volumeRange.value = videoPlayer.volume; // 현재 볼륨 상태로 볼륨 단추 이동
     volumeButton.innerHTML = '<i class="fas fa-volume-up"></i>';
@@ -85,7 +88,7 @@ const formatDate = seconds => {
   totalSeconds = totalSeconds < 10 ? `0${totalSeconds}` : totalSeconds;
 
   return `${hours}:${minutes}:${totalSeconds}`;
-}
+};
 
 // 현재 영상의 시간
 function getCurrentTime() {
@@ -96,8 +99,12 @@ function getCurrentTime() {
 }
 
 // 영상의 전체 시간
-function setTotalTime() {
-  totalTime.innerHTML = formatDate(videoPlayer.duration); // 영상의 총 길이를 double 타입으로 반환.
+async function setTotalTime() {
+  //
+  const blob = await fetch(videoPlayer.src).then(response => response.blob());
+  const duration = await getBlobDuration(blob);
+  console.log(duration);
+  totalTime.innerHTML = formatDate(duration); // 영상의 총 길이를 double 타입으로 반환.
   // 현재 영상의 시간을 1초마다 얻는다.
   setInterval(getCurrentTime, 1000);
 }
@@ -114,7 +121,7 @@ function handleRange(e) {
   } = e;
   // video HTMLElement의 실제 볼륨값에 range의 value 할당
   videoPlayer.volume = value;
-  // 볼륨 크기에 따라 아이콘 모양 변경 
+  // 볼륨 크기에 따라 아이콘 모양 변경
   if (value > 0.7) {
     volumeButton.innerHTML = '<i class="fas fa-volume-up"></i>';
   } else if (value > 0.4) {
